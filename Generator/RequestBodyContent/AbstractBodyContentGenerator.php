@@ -62,23 +62,7 @@ abstract class AbstractBodyContentGenerator implements RequestBodyContentGenerat
 
         if (null === $classGuess) {
             if ($array) {
-                return new Expr\BinaryOp\LogicalAnd(
-                    new Expr\BinaryOp\LogicalAnd(
-                        new Expr\FuncCall(new Name('is_array'), [new Arg(new Expr\PropertyFetch(new Expr\Variable('this'), 'body'))]),
-                        new Expr\FuncCall(new Name('isset'), [new Arg(new Expr\ArrayDimFetch(
-                            new Expr\PropertyFetch(new Expr\Variable('this'), 'body'),
-                            new Expr\ConstFetch(new Name('0'))
-                        ))])
-                    ),
-                    $this->typeToCondition(
-                        $schema->getType(),
-                        $schema->getFormat(),
-                        new Expr\ArrayDimFetch(
-                            new Expr\PropertyFetch(new Expr\Variable('this'), 'body'),
-                            new Expr\ConstFetch(new Name('0'))
-                        )
-                    )
-                );
+                return new Expr\FuncCall(new Name('is_array'), [new Arg(new Expr\PropertyFetch(new Expr\Variable('this'), 'body'))]);
             }
 
             return $this->typeToCondition($schema->getType(), $schema->getFormat(), new Expr\PropertyFetch(new Expr\Variable('this'), 'body'));
@@ -87,22 +71,7 @@ abstract class AbstractBodyContentGenerator implements RequestBodyContentGenerat
         $class = $context->getRegistry()->getSchema($classGuess->getReference())->getNamespace() . '\\Model\\' . $classGuess->getName();
 
         if ($array) {
-            return new Expr\BinaryOp\LogicalAnd(
-                new Expr\BinaryOp\LogicalAnd(
-                    new Expr\FuncCall(new Name('is_array'), [new Arg(new Expr\PropertyFetch(new Expr\Variable('this'), 'body'))]),
-                    new Expr\FuncCall(new Name('isset'), [new Arg(new Expr\ArrayDimFetch(
-                        new Expr\PropertyFetch(new Expr\Variable('this'), 'body'),
-                        new Expr\ConstFetch(new Name('0'))
-                    ))])
-                ),
-                new Expr\Instanceof_(
-                    new Expr\ArrayDimFetch(
-                        new Expr\PropertyFetch(new Expr\Variable('this'), 'body'),
-                        new Expr\ConstFetch(new Name('0'))
-                    ),
-                    new Name('\\' . $class)
-                )
-            );
+            return new Expr\FuncCall(new Name('is_array'), [new Arg(new Expr\PropertyFetch(new Expr\Variable('this'), 'body'))]);
         }
 
         return new Expr\Instanceof_(
